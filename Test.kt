@@ -1,68 +1,56 @@
 
-import kotlin.random.Random
-
 fun main(args : Array<String>) {
-    test1()
+    test()
 }
 
-fun test1() {
-    val arrList = ArrayList<ArrayList<Double>>(List(3){
-        return@List ArrayList<Double>(List(3) {
-            Random.nextInt(-5, 5).toDouble()
-        })
-    })
 
-    val nullMatrix = Matrix(4, 3)
-    println("null Matrix : $nullMatrix")
-    val identityMatrix = Matrix(3, 3, true)
-    println("Identity matrix : $identityMatrix")
+fun test() {
+    val a = Point(0.0, 5.0)
+    val b = Point(10.0, 0.0)
+    val c = Point(5.0, 10.0)
 
-    //creates Matrix filled with elements from double-dimension ArrayList
-    val matrix = Matrix(arrList)
-    println("Matrix with random elements from array list : $matrix")
 
-    // Get value of matrix element at position (i, j)
-    val element = identityMatrix[1, 1]
-    println("element at position (1, 1) of identity matrix: $element")
+    val figures = listOf<Shapes>(
+        Rectangle(a, b),
+        Rectangle(a, 8.0, 12.0),
+        Square(c, 3.0),
+        Square(b,6.0),
+        Circle(7.0),
+        Circle(13.0),
+        Triangle(a, b, c),
+        Triangle(Point(0.0, 0.0), Point(-4.0, -10.0), Point(8.0, -6.0))
+    )
 
-    // Change value of matrix element at position (i, j)
-    nullMatrix[1, 2] = 111.0
-    println("updated the value at (1, 2) of nullMatrix: ${nullMatrix[1, 2]}")
-    println("null matrix after updating value:$nullMatrix")
+    var totalArea = 0.0
+    var largestArea : Shapes= figures[0]
+    var largestPerimeter : Shapes = figures[0]
+    var smallestArea : Shapes = figures[0]
+    var smallestPerimeter : Shapes = figures[0]
 
-    // Add one matrix to another
-    val sum = identityMatrix + Matrix(3, 3, true)
-    println("Result of matrix addition: $sum")
 
-    //Subtract one matrix from another
-    val diff = matrix - Matrix(3, 3, true)
-    println("Result of matrix subtraction: $diff")
+    for (figure in figures) {
+        totalArea += figure.calcArea()
 
-    // Multiply one matrix by another
-    val product = matrix * Matrix(3, 3, true)
-    println("Result of multiplication by Identity Matrix: $product")
 
-    //Multiple matrix by scalar
-    val scalarProd = identityMatrix * 5.0
-    println("Multiplication of  identity Matrix by 5: $scalarProd")
+        if (figure.calcArea() > largestArea.calcArea())
+            largestArea = figure
 
-    // Negate the matrix
-    val negate = -identityMatrix
-    println("Negated identityMatrix: $negate")
 
-    //Get matrix's minor at (i,j)
-    val minor = matrix.getMinor(2, 2)
-    println("Matrix's minor at position (2,2): $minor")
+        if (figure.calcArea() < smallestArea.calcArea())
+            smallestArea = figure
 
-    //Calculate determinant of the matrix
-    val det = matrix.determinant()
-    println("Determinant of the matrix: $det")
 
-    // Compare two matrices
-    val areEqual = nullMatrix == identityMatrix
-    println("Result of comparison:   $areEqual")
+        if (figure.calcPerimeter() > largestPerimeter.calcArea())
+            largestPerimeter = figure
 
-    // Get elements of the matrix as ArrayList
-    val newArrList = matrix.toArrayList()
-    println("Elements of matrix as ArrayList: $newArrList")
+
+        if (figure.calcPerimeter() < smallestPerimeter.calcArea())
+            smallestPerimeter = figure
+    }
+
+    println("Sum Total area of figures: $totalArea")
+    println("The biggest area: ${largestArea.calcArea()} - $largestArea")
+    println("The smallest area: ${smallestArea.calcArea()} - $smallestArea")
+    println("The biggest perimeter: ${largestPerimeter.calcPerimeter()} - $largestPerimeter")
+    println("The smallest perimeter: ${smallestPerimeter.calcPerimeter()} - $smallestPerimeter")
 }
